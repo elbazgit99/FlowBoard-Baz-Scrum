@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FLOWBOARD</title>
   <link rel="stylesheet" href="src/output.css">
-  <link style="background: transparent; border-radius: 2rem;" rel="shortcut icon" href="/assets/logo-icon-1254.png" type="image/x-icon">
+  <link  rel="shortcut icon" href="/assets/logo-icon-1254.png" type="image/x-icon">
   <script type="module" src="API.js" defer></script>
 </head>
 
 <body class="bg-[#09090B] col text-white p-12">
   <!-- npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch -->
-  <h1 class=" text-1 pb-1 mb-4"><span class="text-amber-700">YouCode</span> Scrum</h1>
+  <h1 class=" text-1 pb-1 mb-4"><span class="text-amber-700">Baz</span> Scrum</h1>
   <span id="resetWrapper">
     <!-- <p></p> in js -->
     <!-- <button></button> -->
@@ -38,10 +38,6 @@
         <button id="openModal" type="button"
           class="h-10 bg-[#202023]  p-2 rounded-md w-40 border border-white/75">Create Card</button>
       </fieldset>
-      <label >
-        <ul name="" id="searchTitles"></ul>
-
-      </label>
       <!-- moda -->
 
       <!-- end modal -->
@@ -50,12 +46,15 @@
         <!-- TODO -->
         <div id="todo" class="boards  p-3 bg-[#18181B] border border-[#27272A] rounded-xl grid  gap-2">
           <label>
-            <select name="todoSelection" id="todoSelection" style="appearance: none; color: rgb(176, 154, 154);"
+             <!-- named StatusSelection  in js  -->
+            <select id="todoSelection" name="todoSelection"  style="appearance: none; color: rgb(176, 154, 154);"
               class="bg-[#202023]  p-2 w-full rounded-md border border-white/75">
               <option value="" selected disabled>Select Todo ... 　　　　　　　　　　　　▼</option>
+              <!-- <option value=""></option> create them in js -->
             </select>
           </label>
           <h4>To Do</h4>
+          <!-- named statusBoardWrapper  in js  -->
           <article id="todoElementsWrapper" class="flex flex-col gap-3 p-2 bg-[#202023] rounded-sm">
             <!-- <h6>nothing</h6> -->
           </article>

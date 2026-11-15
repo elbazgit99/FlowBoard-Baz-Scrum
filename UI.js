@@ -1,30 +1,81 @@
 import {cardsDb} from "./API.js"
 
+
 function SetLetters(name) { return /^[A-Za-z]+(?: [A-Za-z]*)?$/.test(name) }
 function SetMaxLength(inputName, MaxLengthNum) { return inputName.maxLength = MaxLengthNum }
 function SetDescription(dscrip) { return /^[\p{L}\p{N} .,:\n]*$/u.test(dscrip) }
 function setRequired(inputName, boolean) { return inputName.required = boolean }
 
-let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-let todoSelection = document.getElementById('todoSelection')
-//const bouton = event.target.closest('button');
-let cardsFilter = []
-console.log(cardsFilter);
+let ticketFilter = []
+console.log(ticketFilter);
 
-
-export function displayCards(boardFilter = cardsFilter ) {
+export function displayCards(dBstatus, statSelect,statOptions,
+   ticketWrapper, ticketSpn, ticketTitle, ticketPrioretySelect, ticketPrioretyOptions ) {
+  // ticketWrapper.replaceChildren()
   for( let card of cardsDb){
+    console.log(cardsDb);
+    
     // title, status,priority,assignee
-
-    cardsFilter.push({
+    ticketFilter.push({
       cardTitle : card.title,
       cardStatus : card.status,
       cardPriority: card.priority,
       assignedTo : card.assignee
+      
     })
-    
   }
+  ticketFilter.forEach(ticket => {
+    
+    // todoSelection;
+    let StatusSelection = document.getElementById(`${statSelect}`) // already exist
+    let statusOptions = document.createElement(`${statOptions}`)
+    // statusOptions.textContent = card.
+    
+
+    let statusBoardWrapper = document.getElementById(`${ticketWrapper}`) // already exist
+    let ticketBoardSpn = document.createElement(`${ticketSpn}`)
+    let ticketBoardTitle = document.createElement(`${ticketTitle}`)
+    let ticketPrioretySelection = document.createElement(`${ticketPrioretySelect}`)
+    let ticketPrioretyNestOptions = document.createElement(`${ticketPrioretyOptions}`)
+    
+    
+  })
 }
+//TODO
+let todoSelection = document.getElementById('todoSelection')
+let todoElementsWrapper = document.getElementById('todoElementsWrapper')
+
+
+
+
+function addCardToBoard(option){
+
+}
+// todoSelection.addEventListener('change')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -6,6 +6,11 @@ let retryBtn = document.createElement('button')
 
 let url = "https://flowboard-api-virid.vercel.app/cards"
 
+// use always splice to delete one element   findexndex( callback)  indexOf()
+// includes(value)  but some(callback)  
+// indexOf() element findIndex(callback) 
+// if bohdha w code moraha ghadi it afichaw b joj isdan khasek dir return khawya wla else
+
 export function ResponseFunc(resolve,reject){
 
   fetch(url)
