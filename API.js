@@ -1,5 +1,6 @@
 export let cardsDb = []
 import {displayCards} from './UI.js'
+import {todoSelection, todoElementsWrapper} from './UI.js'
 let resetWrapper = document.getElementById('resetWrapper')
 let resError = document.createElement('p')
 let retryBtn = document.createElement('button')
@@ -23,7 +24,7 @@ export function ResponseFunc(resolve,reject){
 
   .then(data => {
     cardsDb = data
-    displayCards()
+    displayCards('todo',todoSelection)
     
   })
 

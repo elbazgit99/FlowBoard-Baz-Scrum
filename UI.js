@@ -9,8 +9,8 @@ function setRequired(inputName, boolean) { return inputName.required = boolean }
 let ticketFilter = []
 console.log(ticketFilter);
 
-export function displayCards(dBstatus, statSelect,statOptions,
-   ticketWrapper, ticketSpn, ticketTitle, ticketPrioretySelect, ticketPrioretyOptions ) {
+export function displayCards(boardStatus, statSelect) {
+  ticketFilter = []
   // ticketWrapper.replaceChildren()
   for( let card of cardsDb){
     console.log(cardsDb);
@@ -25,32 +25,46 @@ export function displayCards(dBstatus, statSelect,statOptions,
     })
   }
   ticketFilter.forEach(ticket => {
-    
-    // todoSelection;
-    let StatusSelection = document.getElementById(`${statSelect}`) // already exist
-    let statusOptions = document.createElement(`${statOptions}`)
-    // statusOptions.textContent = card.
-    
-
-    let statusBoardWrapper = document.getElementById(`${ticketWrapper}`) // already exist
-    let ticketBoardSpn = document.createElement(`${ticketSpn}`)
-    let ticketBoardTitle = document.createElement(`${ticketTitle}`)
-    let ticketPrioretySelection = document.createElement(`${ticketPrioretySelect}`)
-    let ticketPrioretyNestOptions = document.createElement(`${ticketPrioretyOptions}`)
-    
-    
+    if (ticket.cardStatus == boardStatus) {
+      let StatusSelection = document.getElementById(statSelect) // already exist
+      let statusOptions = document.createElement('option')
+      statusOptions.textContent = ticket.cardTitle
+      statusOptions.value = ticket.cardTitle
+      StatusSelection.append(statusOptions)
+    }
   })
 }
+//NOTE : BRING THEM ALL TO THEN METHOD IN API.JS
 //TODO
-let todoSelection = document.getElementById('todoSelection')
-let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-
-
-
-
-function addCardToBoard(option){
-
+export let todoSelection = document.getElementById('todoSelection')
+export let todoElementsWrapper = document.getElementById('todoElementsWrapper')
+// boardStatus, statSelect,statOptions
+todoSelection.addEventListener('change',)
+function addToBoard(){
+        
+      let statusBoardWrapper = document.getElementById(`${ticketWrapper}`) // already exist
+      let ticketBoardSpn = document.createElement(`${ticketSpn}`)
+      let ticketBoardTitle = document.createElement(`${ticketTitle}`)
+      let ticketPrioretySelection = document.createElement(`${ticketPrioretySelect}`)
+      let ticketPrioretyNestOptions = document.createElement(`${ticketPrioretyOptions}`)
+      
 }
+
+
+//inProgress
+let inProgressSelection = document.getElementById('inProgressSelection')
+let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
+
+//DONE
+let doneSelection = document.getElementById('doneSelection')
+let doneElementWrapper = document.getElementById('doneElementWrapper')
+
+
+
+
+// function addCardToBoard(option){
+
+// }
 // todoSelection.addEventListener('change')
 
 
