@@ -15,23 +15,22 @@ export function displayCards(boardStatus, statSelect) {
     
     // title, status,priority,assignee
     let Ticket = {
-      cardTitle : card.title,
-      cardStatus : card.status,
-      cardPriority: card.priority,
-      assignedTo : card.assignee
-      
+      title : card.title,
+      status : card.status,
+      priority: card.priority,
+      assignee: card.assignee
     }
     ticketFilter.push(Ticket)
   }
   ticketFilter.forEach(ticket => {
-    if (ticket.cardStatus == boardStatus) {
+    if (ticket.status == boardStatus) {
         
         let StatusSelection = statSelect // already exist
         let statusOptions = document.createElement('option')
         statusOptions.style.color = 'white'
   
-        statusOptions.textContent = ticket.cardTitle
-        statusOptions.value = ticket.cardTitle
+        statusOptions.textContent = ticket.title
+        statusOptions.value = ticket.title
         StatusSelection.append(statusOptions)
         return
       
@@ -54,7 +53,7 @@ export let doneElementWrapper = document.getElementById('doneElementWrapper')
 export function addToBoard(event,ticketWrapper,ticketStatus){
   let selectedTitle = event.target.value
   let selectedTicket = ticketFilter.find(ticket => 
-    ticket.cardTitle === selectedTitle && ticket.cardStatus === ticketStatus
+    ticket.title === selectedTitle && ticket.status === ticketStatus
   )
   if (!selectedTicket) {
     return
@@ -65,14 +64,14 @@ export function addToBoard(event,ticketWrapper,ticketStatus){
 
   let boardTitle = document.createElement('h3')
   boardTitle.classList.add("ticketTitle")
-  boardTitle.textContent = selectedTicket.cardTitle
+  boardTitle.textContent = selectedTicket.title
 
   let prioritySelection = document.createElement('select')
       let priorityOptions = document.createElement('option')
       priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
 
-      priorityOptions.textContent = selectedTicket.cardPriority
-      priorityOptions.value = selectedTicket.cardPriority
+      priorityOptions.textContent = selectedTicket.priority
+      priorityOptions.value = selectedTicket.priority
 
       prioritySelection.append(priorityOptions)
 
@@ -189,22 +188,38 @@ export function searchByTitle(event) {
   })
 
   let filteredTickets = ticketFilter.filter(ticket => ticket.title.toLowerCase().includes(inputText.toLowerCase().trim()))
+  // console.log(ticketFilter);
+  
   return filteredTickets
 }
 
 export let uiFilter = document.getElementById('uiFilter')
 export let filterSpn = document.getElementById('filterSpn')
+
 export function openUiFilter(){
+  if ( filterSpn.style.display === 'flex') {
+      filterSpn.style.display = 'none'
+      return
+  }
+
+  filterSpn.style.display = 'flex'
+  filterSpn.style.cursor = 'pointer'
+  let prioritySelect = document.createElement('select')
+  prioritySelect.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+
   cardsDb.forEach(card => {
-    let prioritySelect = document.createElement('select')
-    prioritySelect.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+    if (!ticketFilter.includes(card.priority)) {
+      ticketFilter.push(card.priority)
+      let priorityOptions = document.createElement('option')
+      priorityOptions.style.color = 'white'
+      priorityOptions.textContent = card.priority
+      priorityOptions.value = card.priority
+  
+      prioritySelect.append(priorityOptions)
+    }
 
-    let priorityOptions = document.createElement('option')
-    priorityOptions.style.color = 'white'
-    priorityOptions.textContent = card.priority
-    priorityOptions.value = card.priority
-
-    prioritySelect.append(priorityOptions)
-    filterSpn.append(prioritySelect)
   })
+  filterSpn.textContent = ''
+  filterSpn.append(prioritySelect)
+
 }

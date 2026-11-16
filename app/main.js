@@ -35,9 +35,4 @@ ui.HiddBtn.addEventListener('click', function(){
   ticketModal.style.display = "none"
 })
 
-ui.uiFilter.addEventListener('click', () => {
-  ui.filterSpn.style.display = 'flex'
-  ui.filterSpn.style.cursor = 'pointer'
-
-  
-})
+ui.uiFilter.addEventListener('click', ui.openUiFilter)
