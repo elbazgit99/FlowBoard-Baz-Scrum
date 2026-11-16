@@ -23,6 +23,7 @@ export async function getCards(resolve,reject){
       displayCards('done',doneSelection)
       resolve(cardsDb)
 
+      
     
   } catch (error) {
     resError.textContent = error.message
