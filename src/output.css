@@ -182,17 +182,8 @@
   .grid {
     display: grid;
   }
-  .table {
-    display: table;
-  }
-  .h-2 {
-    height: calc(var(--spacing) * 2);
-  }
   .h-10 {
     height: calc(var(--spacing) * 10);
-  }
-  .w-2 {
-    width: calc(var(--spacing) * 2);
   }
   .w-40 {
     width: calc(var(--spacing) * 40);
@@ -205,12 +196,6 @@
   }
   .max-w-92 {
     max-width: calc(var(--spacing) * 92);
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .resize {
-    resize: both;
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -254,9 +239,6 @@
   }
   .border-\[\#27272A\] {
     border-color: #27272A;
-  }
-  .border-white {
-    border-color: var(--color-white);
   }
   .border-white\/75 {
     border-color: color-mix(in srgb, #fff 75%, transparent);
@@ -306,9 +288,6 @@
   }
   .text-white {
     color: var(--color-white);
-  }
-  .underline {
-    text-decoration-line: underline;
   }
   .outline {
     outline-style: var(--tw-outline-style);
