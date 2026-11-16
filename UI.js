@@ -1,7 +1,7 @@
 import {cardsDb} from "./API.js"
 
 
-function SetLetters(name) { return /^[A-Za-z]+(?: [A-Za-z]*)?$/.test(name) }
+function SetLetters(name) { return /^\p{L}+(?: \p{L}+)*$/u.test(name) }
 function SetDescription(dscrip) { return /^[\p{L}\p{N} .,:\n]*$/u.test(dscrip) }
 function SetMaxLength(inputName, MaxLengthNum) { return inputName.maxLength = MaxLengthNum }
 function setRequired(inputName, boolean) { return inputName.required = boolean }
@@ -14,19 +14,18 @@ export function displayCards(boardStatus, statSelect) {
     console.log(cardsDb);
     
     // title, status,priority,assignee
-    let task = {
+    let Ticket = {
       cardTitle : card.title,
       cardStatus : card.status,
       cardPriority: card.priority,
       assignedTo : card.assignee
       
     }
-    ticketFilter.push(task)
+    ticketFilter.push(Ticket)
     console.log(ticketFilter)
   }
   ticketFilter.forEach(ticket => {
     if (ticket.cardStatus == boardStatus) {
-      if (!ticketFilter.includes(ticket.cardStatus)) {
         
         let StatusSelection = statSelect // already exist
         let statusOptions = document.createElement('option')
@@ -35,47 +34,67 @@ export function displayCards(boardStatus, statSelect) {
         statusOptions.textContent = ticket.cardTitle
         statusOptions.value = ticket.cardTitle
         StatusSelection.append(statusOptions)
-      }
+        return
+      
     }
   })
 }
-
-
-
-//NOTE : BRING THEM ALL  to API.JS
-//TODO
 export let todoSelection = document.getElementById('todoSelection')
-export let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-todoSelection.addEventListener('change', addToBoard)
-function addToBoard(){
-        
-      let statusBoardWrapper = document.getElementById(`${ticketWrapper}`) // already exist
-      let ticketBoardSpn = document.createElement(`${ticketSpn}`)
-      let ticketBoardTitle = document.createElement(`${ticketTitle}`)
-      let ticketPrioretySelection = document.createElement(`${ticketPrioretySelect}`)
-      let ticketPrioretyNestOptions = document.createElement(`${ticketPrioretyOptions}`)
+export let inProgressSelection = document.getElementById('inProgressSelection')
+export let doneSelection = document.getElementById('doneSelection')
+
+
+//EVENT function
+function addToBoard(event,ticketWrapper,ticketStatus){
+  let selectedTitle = event.target.value
+  let selectedTicket = ticketFilter.find(ticket => 
+    ticket.cardTitle === selectedTitle && ticket.cardStatus === ticketStatus
+  )
+  if (!selectedTicket) {
+    return
+  }
+
+  let boardSpn = document.createElement('span')
+  boardSpn.classList.add("bg-[#2A2A2D]","rounded-md")
+  let boardTitle = document.createElement('h3')
+  boardTitle.textContent = selectedTicket.cardTitle
+
+  let prioritySelection = document.createElement('select')
+      let priorityOptions = document.createElement('option')
+      priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
+
+      priorityOptions.textContent = selectedTicket.cardPriority
+      priorityOptions.value = selectedTicket.cardPriority
+
+      prioritySelection.append(priorityOptions)
+
+  boardSpn.append(boardTitle,prioritySelection)
+  ticketWrapper.append(boardSpn)
       
 }
 
+//NOTE : BRING THEM ALL  to API.JS
+//TODO
+
+let todoElementsWrapper = document.getElementById('todoElementsWrapper')
+
+todoSelection.addEventListener('change', (event) => {
+  addToBoard(event,todoElementsWrapper,'todo')
+})
+
 
 //inProgress
-export let inProgressSelection = document.getElementById('inProgressSelection')
-export let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
 
+let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
+inProgressSelection.addEventListener('change', (event) => {
+  addToBoard(event,inProgressElementsWrapper, 'in-progress')
+} )
 //DONE
-export let doneSelection = document.getElementById('doneSelection')
-export let doneElementWrapper = document.getElementById('doneElementWrapper')
 
-
-
-
-// function addCardToBoard(option){
-
-// }
-// todoSelection.addEventListener('change')
-
-
-
+let doneElementWrapper = document.getElementById('doneElementWrapper')
+doneSelection.addEventListener('change', (event) => {
+  addToBoard(event,doneElementWrapper, 'done')
+} )
 
 
 
@@ -92,108 +111,128 @@ let status = document.getElementById("status");
 let priority = document.getElementById("priority");
 
 
-openModal.addEventListener("click", function() {
-    myModal.style.display = "flex";
-});
 
 function titleValidator(){
-  let coffeNameInput = document.querySelector('#coffeName')
-coffeNameInput.addEventListener("input", coffeNameValidator)
- 
-function coffeNameValidator() {
-    let coffeMessage = document.querySelector('#coffeMessage')
-    let coffeValue = coffeNameInput.value
-    localStorage.setItem("coffeName",coffeValue )
-    
-    try {
-        isMaxLength(coffeNameInput, 40)
-        isRequired(coffeNameInput, true)
-        if (coffeValue.trim() == ``) { throw new Error(`Enter Product Name`) }
-        if (!isLetters(coffeValue)) { throw new Error(`Invalid Product Name, Only Letters are valid`) }
-        coffeMessage.textContent = ``
-        return true
-    } catch (error) {
-        coffeMessage.textContent = error.message
-        return false
-    }
+  let msg = document.querySelector('.msg')
+  let titleValue = titleInpt.value
+  localStorage.setItem("ticketTitle", titleValue)
+  try {
+    msg.textContent = ''
+    titleInpt.style.outline = ""
+    setRequired(titleInpt,true)
+    SetMaxLength(titleInpt,100)
+    if (titleValue.trim() == ``) { throw new Error(`ticket title is a must`) }
+    if (!SetLetters(titleValue)) { throw new Error(`Invalid title, Only Letters are valid`, titleInpt.style.outline = "solid 1px red") }
+    return true
+  } catch (error) {
+    msg.textContent = error.message
+    return false
+  }
 }
-}
-
-
 titleInpt.addEventListener('input',titleValidator)
 
 
-addBtn.addEventListener("click", function() {
-
-    if (titleInpt.value === "") {
-        return
-    }
-
-    let newTask = {
-        title: titleInpt.value,
-        description: descriptionInpt.value,
-        status: status.value,
-        priority: priority.value
-    };
-
-    ticketFilter.push(newTask)
-
-    if (newTask.status === "todo") {
-
-        if (!ticketFilter.includes(newTask.priority)) {
-
-            ticketFilter.push(newTask.priority)
-        }
-
-        let newOption = document.createElement("option")
-        newOption.value = newTask.title;
-         newOption.textContent = newTask.title;
-
-      todoSelection.append(newOption);
-        todoSelection.value = newTask.title;  
-        todoSelection.dispatchEvent(new Event("change")) // to trigger an event for the created titles
-
-
-        todoElementsWrapper.lastElementChild.querySelector("select").value = newTask.priority;
-
-    } else if (newTask.status === "in-progress") {
-
-        if (!ticketFilter.includes(newTask.priority)) {
-
-            ticketFilter.push(newTask.priority)
-        }
-
-            let newOption = document.createElement("option")
-            newOption.value = newTask.title
-            newOption.textContent = newTask.title
-
-        inProgressSelection.append(newOption)
-
-        inProgressSelection.value = newTask.title
-        inProgressSelection.dispatchEvent(new Event('change'))
-
-        inProgressElementsWrapper.lastElementChild.querySelector('select').value = newTask.priority
-
-    }  else if (newTask.status === "done") {
-
-        if (!ticketFilter.includes(newTask.priority)) {
-            ticketFilter.push(newTask.priority)
-        }
-
-            let newOption = document.createElement("option")
-               newOption.value = newTask.title
-            newOption.textContent = newTask.title
-
-          doneSelection.append(newOption)
-
-        doneSelection.value = newTask.title
-    doneSelection.dispatchEvent(new Event('change'))
-
-        doneElementWrapper.lastElementChild.querySelector("select").value = newTask.priority;
+function descriptionValidator(){
+  let msg = document.querySelector('.msg')
+  let descriptionValue = descriptionInpt.value
+  localStorage.setItem("ticketTitle", descriptionValue)
+  try {
+    msg.textContent = ''
+    descriptionInpt.style.outline = ""
+    setRequired(descriptionInpt,false)
+    SetMaxLength(descriptionInpt,500)
+    // if (descriptionValue.trim() == ``) { throw new Error(``) }
+    if (!SetDescription(descriptionValue)) { throw new Error(`Only Letters and Numbers Are Valid`, descriptionInpt.style.outline = "solid 1px red") }
+    return true
+  } catch (error) {
+    msg.textContent = error.message
+    return false
   }
+}
 
-            myModal.style.display = 'none'
-});
+descriptionInpt.addEventListener('input',descriptionValidator)
+
+
+
+
+openModal.addEventListener("click", function() {
+    myModal.style.display = "flex";
+})
+
+// addBtn.addEventListener("click", function() {
+//   descriptionValidator()
+//   titleValidator()
+
+//     if (titleInpt.value === "") {
+//         return
+//     }
+
+//     let newTicket = {
+//         title: titleInpt.value,
+//         description: descriptionInpt.value,
+//         status: status.value,
+//         priority: priority.value
+//     };
+
+//     ticketFilter.push(newTicket)
+
+//     if (newTicket.status === "todo") {
+
+//         if (!ticketFilter.includes(newTicket.priority)) {
+
+//             ticketFilter.push(newTicket.priority)
+//         }
+
+//         let newOption = document.createElement("option")
+//         newOption.value = newTicket.title;
+//          newOption.textContent = newTicket.title;
+
+//       todoSelection.append(newOption);
+//         todoSelection.value = newTicket.title;  
+//         todoSelection.dispatchEvent(new Event("change")) // to trigger an event for the created titles
+
+
+//         todoElementsWrapper.lastElementChild.querySelector("select").value = newTicket.priority;
+
+//     } else if (newTicket.status === "in-progress") {
+
+//         if (!ticketFilter.includes(newTicket.priority)) {
+
+//             ticketFilter.push(newTicket.priority)
+//         }
+
+//             let newOption = document.createElement("option")
+//             newOption.value = newTicket.title
+//             newOption.textContent = newTicket.title
+
+//         inProgressSelection.append(newOption)
+
+//         inProgressSelection.value = newTicket.title
+//         inProgressSelection.dispatchEvent(new Event('change'))
+
+//         inProgressElementsWrapper.lastElementChild.querySelector('select').value = newTicket.priority
+
+//     }  else if (newTicket.status === "done") {
+
+//         if (!ticketFilter.includes(newTicket.priority)) {
+//             ticketFilter.push(newTicket.priority)
+//         }
+
+//             let newOption = document.createElement("option")
+//                newOption.value = newTicket.title
+//             newOption.textContent = newTicket.title
+
+//           doneSelection.append(newOption)
+
+//         doneSelection.value = newTicket.title
+//     doneSelection.dispatchEvent(new Event('change'))
+
+//         doneElementWrapper.lastElementChild.querySelector("select").value = newTicket.priority;
+//   }
+
+//             myModal.style.display = 'none'
+            
+// })
 
 
 
@@ -201,186 +240,4 @@ HiddBtn.addEventListener('click', function() {
 
      myModal.style.display = "none"
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export function displayTodoCardsTitle(){ 
-//     todoFilter = []
-    
-//   // todoSelection.replaceChildren()
-//   cardsDb.forEach((card) =>  {
-    
-//     if(card.status === "todo"){
-//       let todoOptions = document.createElement('option')
-//       todoOptions.style.color = "white"
-//       todoOptions.textContent = card.title
-//       todoOptions.value = card.title
-//       // todoOptions.dataset.todoPrioritySelectionAttribute = card.priority
-//       // console.log(todoOptions.dataset.todoPrioritySelectionAttribute);
-//       todoSelection.insertBefore(todoOptions, todoSelection.firstChild)
-
-//       if (!todoFilter.includes(card.priority)) {
-//       todoFilter.push(card.priority)
-//         }
-//     }
-//   }) 
-
-// }
-// todoSelection.addEventListener('change', addTodoCart)
-// function addTodoCart(event){
-//         let todoTitle = document.createElement('span')
-//       todoTitle.classList.add("bg-[#2A2A2D]","rounded-md")  //add() remove() toggle() replace() contains()
-//       todoTitle.textContent += event.target.value
-
-//       let todoPrioritySelection = document.createElement('select')
-
-
-//       todoFilter.forEach(priority => {
-//         console.log(priority);
-        
-//         let priorityOptions = document.createElement('option')
-//         priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
-//         priorityOptions.textContent = priority
-//         priorityOptions.value = priority
-
-//         todoPrioritySelection.append(priorityOptions)
-//       })
-      
-//       todoTitle.append(todoPrioritySelection )
-      
-    
-//       todoElementsWrapper.append(todoTitle);
-//     }
-
-
-// let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
-// let inProgressSelection = document.getElementById('inProgressSelection')
-
-// let inProgressFilter = []
-// export function displayinProgressTitle() {
-//   inProgressFilter = []
-//   // console.log(inProgressFilter);
-//   cardsDb.forEach(card => {
-//     if (card.status === "in-progress") {
-//       let inProgressOption = document.createElement('option')
-//       inProgressOption.style.color = "white"
-//       inProgressOption.value = card.title
-//       inProgressOption.textContent = card.title
-
-//       inProgressSelection.insertBefore(inProgressOption, inProgressSelection.firstChild)
-
-//       if (!inProgressFilter.includes(card.priority)) {
-//         inProgressFilter.push(card.priority)
-        
-//       }
-//       // console.log(card.title, card.priority)
-//     }
-//   })
-// }
-// //you have to check if aleady existed
-// inProgressSelection.addEventListener('change', addInProgress)
-
-//  function addInProgress(event){
-//   let inProgressTitle = document.createElement('span')  
-//   inProgressTitle.classList.add("bg-[#2A2A2D]","rounded-md")
-//   inProgressTitle.draggable = true
-
-//   inProgressTitle.textContent += event.target.value
-
-//   let inProgressprioritySelection = document.createElement('select')
-
-//   inProgressFilter.forEach(priority => {
-//     let priorityOptions = document.createElement('option')
-//     priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
-//     priorityOptions.textContent = priority
-//     priorityOptions.value = priority
-
-//     inProgressprioritySelection.append(priorityOptions)
-//   })
-//   inProgressTitle.append(inProgressprioritySelection)
-  
-//   inProgressElementsWrapper.append(inProgressTitle)
-// }
-
-
-// let doneSelection = document.getElementById('doneSelection')
-// let doneElementWrapper = document.getElementById('doneElementWrapper')
-
-// let doneFilter = []
-// export function displayDoneTitle(){
-//   doneFilter = []
-//   console.log(doneFilter);
-  
-//   cardsDb.forEach(card => {
-//     if (card.status === "done") {
-//       let doneOption = document.createElement('option')
-//       doneOption.style.color = "white"
-//       doneOption.value = card.title
-//       doneOption.textContent = card.title
-//       doneSelection.insertBefore(doneOption, doneSelection.firstChild)
-
-//       if (!doneFilter.includes(card.priority)) {
-//         doneFilter.push(card.priority)
-//       }
-//       console.log(card.title, card.priority);
-      
-//     }
-//     // KEEP NOTE : priority was miss pronunciation !!!!!
-//   })
-// }
-
-// doneSelection.addEventListener('change',addInDone )
-// function addInDone(event){
-//   let doneTitle = document.createElement('span')
-//   doneTitle.classList.add("bg-[#2A2A2D]","rounded-md")
-//   doneTitle.textContent += event.target.value
-
-
-//   let donePrioritySelection = document.createElement('select')
-
-//   doneFilter.forEach(priority => {
-//     let donePriorityOptions = document.createElement('option')
-//     donePriorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
-//     donePriorityOptions.textContent = priority
-//     donePriorityOptions.value = priority
-//     donePrioritySelection.append(donePriorityOptions)
-//   })
-
-//   doneTitle.append(donePrioritySelection)
-//   doneElementWrapper.append(doneTitle);
-// }
-
-
-
-
-//         // todoSelection.dispatchEvent(new Event("change")) // used to add an event for the created titles
-
-
-
-// let searchInput = document.querySelector('#searchInput')
-// let searchTitlesSelection = document.querySelector('#searchTitles')
-// let searchTerm = '' // searchTerm is whatever we input in our search field.
-// function showList(params) {
- 
-  
-// }
-
-
 

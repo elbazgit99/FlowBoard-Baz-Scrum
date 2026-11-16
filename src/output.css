@@ -286,6 +286,10 @@
   .text-white {
     color: var(--color-white);
   }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
 }
 @font-face {
   font-family: StyreneB-Regular;
@@ -306,7 +310,7 @@
   justify-content: center;
   align-items: center;
 }
-.modal-content {
+.modalForm {
   background-color: #202023;
   width: 90%;
   max-width: 30rem;
@@ -391,10 +395,16 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: block))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
       --tw-border-style: solid;
+      --tw-outline-style: solid;
     }
   }
 }

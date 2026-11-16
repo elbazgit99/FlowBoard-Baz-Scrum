@@ -1,7 +1,7 @@
 export let cardsDb = []
 import {displayCards} from './UI.js'
 import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
-import {todoElementsWrapper, inProgressElementsWrapper, doneElementWrapper} from './UI.js'
+
 let resetWrapper = document.getElementById('resetWrapper')
 let resError = document.createElement('p')
 let retryBtn = document.createElement('button')
