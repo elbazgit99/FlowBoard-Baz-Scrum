@@ -1,16 +1,14 @@
 export let cardsDb = []
 import {displayCards} from './UI.js'
-import {todoSelection, todoElementsWrapper} from './UI.js'
+import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
+import {todoElementsWrapper, inProgressElementsWrapper, doneElementWrapper} from './UI.js'
 let resetWrapper = document.getElementById('resetWrapper')
 let resError = document.createElement('p')
 let retryBtn = document.createElement('button')
 
 let url = "https://flowboard-api-virid.vercel.app/cards"
 
-// use always splice to delete one element   findexndex( callback)  indexOf()
-// includes(value)  but some(callback)  
-// indexOf() element findIndex(callback) 
-// if bohdha w code moraha ghadi it afichaw b joj isdan khasek dir return khawya wla else
+
 
 export function ResponseFunc(resolve,reject){
 
@@ -25,12 +23,14 @@ export function ResponseFunc(resolve,reject){
   .then(data => {
     cardsDb = data
     displayCards('todo',todoSelection)
+    displayCards('in-progress',inProgressSelection)
+    displayCards('done',doneSelection)
     
   })
 
   .catch(error => {
     
-    resError.textContent = error
+    resError.textContent = error.message
     resetWrapper.insertBefore(resError, resetWrapper.firstChild)
     
   })

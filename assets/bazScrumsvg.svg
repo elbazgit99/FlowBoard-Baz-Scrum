@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Three-dot burgundy icon</title>
+  <desc id="desc">Three evenly spaced circles in crimson, grey, and cream on a burgundy rounded-square background.</desc>
+  <!-- Rounded corners are part of the SVG background shape itself. -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="#69001F"/>
+  <circle cx="142" cy="256" r="56" fill="#C6003D"/>
+  <circle cx="256" cy="256" r="56" fill="#B8B8B8"/>
+  <circle cx="370" cy="256" r="56" fill="#FFF4DF"/>
+</svg>

@@ -6,28 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FLOWBOARD</title>
   <link rel="stylesheet" href="src/output.css">
-  <link  rel="shortcut icon" href="/assets/logo-icon-1254.png" type="image/x-icon">
+  <link  rel="shortcut icon" href="/assets/bazScrumsvg.svg" type="image/x-icon">
   <script type="module" src="API.js" defer></script>
 </head>
 
 <body class="bg-[#09090B] col text-white p-12">
   <!-- npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch -->
-  <h1 class=" text-1 pb-1 mb-4"><span class="text-amber-700">Baz</span> Scrum</h1>
+    <h1 class=" text-1 pb-1 mb-4"><img src="./assets/bazScrumsvg.svg" style="height: 2rem;display: inline-block; border-radius: 5px;" >
+    <span style="color: #8E1B38; font-weight: bolder;">Baz</span> Scrum</h1>
   <span id="resetWrapper">
     <!-- <p></p> in js -->
     <!-- <button></button> -->
   </span>
   <main class="grid grid-cols-5 gap-4 ">
     <aside class="p-3 bg-[#18181B] border border-[#27272A] rounded-xl grid  gap-2">
-      <span class=" p-2 bg-[#202023] rounded-sm">1</span>
-      <span class=" p-2 bg-[#202023] rounded-sm">2</span>
-      <span class=" p-2 bg-[#202023] rounded-sm">3</span>
-      <span class=" p-2 bg-[#202023] rounded-sm">4</span>
-      <span class=" p-2 bg-[#202023] rounded-sm">5</span>
-      <span class=" p-2 bg-[#202023] rounded-sm">6</span>
+      <span class=" p-2 bg-[#202023] rounded-sm">Backlog</span>
+      <span class=" p-2 bg-[#202023] rounded-sm">Setting</span>
+      <span class=" p-2 bg-[#202023] rounded-sm">Other Spaces</span>
+      <span class=" p-2 bg-[#202023] rounded-sm">Teams</span>
     </aside>
 
-    <section class="col-span-4 grid gap-1 ">
+    <section class="col-span-4 grid gap-3 ">
       <h2 class="text-2xl">Flowboard</h2>
 
       <fieldset class="flex align-middle justify-start gap-x-5">
@@ -36,10 +35,68 @@
             class="bg-[#202023]  p-2 w-92 max-w-92 rounded-md " style="border: solid 1px #38383d; ">
         </label>
         <button id="openModal" type="button"
-          class="h-10 bg-[#202023]  p-2 rounded-md w-40 border border-white/75">Create Card</button>
+          class="h-10 bg-[#202023]  p-2 rounded-md w-40 border border-white/75">Create Card 　 +</button>
       </fieldset>
       <!-- moda -->
+      <section id="myModal" class="modalWrapper">
+        <div id="modalContent" class="modal-content">
+            <span>
+              <h2 id="modalTitle" class="modal-title">Create Ticket</h2>
+              <small id="msg" class="text-red-800">msg</small>
 
+            </span>
+
+            <label  class="modal-label">Title
+              <input id="titleInpt" type="text"  class="modal-input"
+                  placeholder="Enter ticket title...">
+            </label>
+
+            <label class="modal-label">Description
+              <textarea id="descriptionInpt" class="modal-textarea"
+                  placeholder="Add a description..."></textarea>
+            </label>
+
+            <fieldset id="ticketDetails" class="ticket-details">
+                <legend id="detailsLegend" class="details-legend">
+                    Ticket Details
+                </legend>
+
+                <div id="detailsRow" class="details-row">
+
+                    <div id="statusItem" class="detail-item">
+                        <label class="detail-label">Status
+                          <select id="status" class="detail-select">
+                              <option value="" selected disabled>Status ...</option>
+                              <option value="todo">To Do</option>
+                              <option value="in-progress">In Progress</option>
+                              <option value="done">Done</option>
+                          </select>
+                        </label>
+
+                    </div>
+
+                    <div id="priorityItem" class="detail-item">
+                        <label class="detail-label">Priority
+                          <select id="priority" class="detail-select">
+                              <option value="" selected disabled>Priority ...</option>
+                              <option value="high">High</option>
+                              <option value="medium">Medium</option>
+                              <option value="low">Low</option>
+                          </select>
+
+                        </label>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <div id="modalButtons" class="modal-btns">
+                <button id="addBtn" class="modal-btn">Add</button>
+                <button id="HiddBtn" class="modal-btn">hidd</button>
+            </div>
+
+        </div>
+      </section>
       <!-- end modal -->
       <div id="BoardsContainer" class="grid grid-cols-3 gap-5">
 

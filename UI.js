@@ -2,44 +2,51 @@ import {cardsDb} from "./API.js"
 
 
 function SetLetters(name) { return /^[A-Za-z]+(?: [A-Za-z]*)?$/.test(name) }
-function SetMaxLength(inputName, MaxLengthNum) { return inputName.maxLength = MaxLengthNum }
 function SetDescription(dscrip) { return /^[\p{L}\p{N} .,:\n]*$/u.test(dscrip) }
+function SetMaxLength(inputName, MaxLengthNum) { return inputName.maxLength = MaxLengthNum }
 function setRequired(inputName, boolean) { return inputName.required = boolean }
 
 let ticketFilter = []
-console.log(ticketFilter);
 
 export function displayCards(boardStatus, statSelect) {
   ticketFilter = []
-  // ticketWrapper.replaceChildren()
   for( let card of cardsDb){
     console.log(cardsDb);
     
     // title, status,priority,assignee
-    ticketFilter.push({
+    let task = {
       cardTitle : card.title,
       cardStatus : card.status,
       cardPriority: card.priority,
       assignedTo : card.assignee
       
-    })
+    }
+    ticketFilter.push(task)
+    console.log(ticketFilter)
   }
   ticketFilter.forEach(ticket => {
     if (ticket.cardStatus == boardStatus) {
-      let StatusSelection = document.getElementById(statSelect) // already exist
-      let statusOptions = document.createElement('option')
-      statusOptions.textContent = ticket.cardTitle
-      statusOptions.value = ticket.cardTitle
-      StatusSelection.append(statusOptions)
+      if (!ticketFilter.includes(ticket.cardStatus)) {
+        
+        let StatusSelection = statSelect // already exist
+        let statusOptions = document.createElement('option')
+        statusOptions.style.color = 'white'
+  
+        statusOptions.textContent = ticket.cardTitle
+        statusOptions.value = ticket.cardTitle
+        StatusSelection.append(statusOptions)
+      }
     }
   })
 }
-//NOTE : BRING THEM ALL TO THEN METHOD IN API.JS
+
+
+
+//NOTE : BRING THEM ALL  to API.JS
 //TODO
 export let todoSelection = document.getElementById('todoSelection')
 export let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-// boardStatus, statSelect,statOptions
-todoSelection.addEventListener('change',)
+todoSelection.addEventListener('change', addToBoard)
 function addToBoard(){
         
       let statusBoardWrapper = document.getElementById(`${ticketWrapper}`) // already exist
@@ -52,12 +59,12 @@ function addToBoard(){
 
 
 //inProgress
-let inProgressSelection = document.getElementById('inProgressSelection')
-let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
+export let inProgressSelection = document.getElementById('inProgressSelection')
+export let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
 
 //DONE
-let doneSelection = document.getElementById('doneSelection')
-let doneElementWrapper = document.getElementById('doneElementWrapper')
+export let doneSelection = document.getElementById('doneSelection')
+export let doneElementWrapper = document.getElementById('doneElementWrapper')
 
 
 
@@ -72,9 +79,128 @@ let doneElementWrapper = document.getElementById('doneElementWrapper')
 
 
 
+let myModal = document.getElementById("myModal");
+let openModal = document.getElementById("openModal");
+
+let addBtn = document.getElementById("addBtn")
+  let HiddBtn = document.getElementById("HiddBtn")
+
+let titleInpt = document.getElementById("titleInpt");
+  let descriptionInpt = document.getElementById("descriptionInpt")
+
+let status = document.getElementById("status");
+let priority = document.getElementById("priority");
+
+
+openModal.addEventListener("click", function() {
+    myModal.style.display = "flex";
+});
+
+function titleValidator(){
+  let coffeNameInput = document.querySelector('#coffeName')
+coffeNameInput.addEventListener("input", coffeNameValidator)
+ 
+function coffeNameValidator() {
+    let coffeMessage = document.querySelector('#coffeMessage')
+    let coffeValue = coffeNameInput.value
+    localStorage.setItem("coffeName",coffeValue )
+    
+    try {
+        isMaxLength(coffeNameInput, 40)
+        isRequired(coffeNameInput, true)
+        if (coffeValue.trim() == ``) { throw new Error(`Enter Product Name`) }
+        if (!isLetters(coffeValue)) { throw new Error(`Invalid Product Name, Only Letters are valid`) }
+        coffeMessage.textContent = ``
+        return true
+    } catch (error) {
+        coffeMessage.textContent = error.message
+        return false
+    }
+}
+}
+
+
+titleInpt.addEventListener('input',titleValidator)
+
+
+addBtn.addEventListener("click", function() {
+
+    if (titleInpt.value === "") {
+        return
+    }
+
+    let newTask = {
+        title: titleInpt.value,
+        description: descriptionInpt.value,
+        status: status.value,
+        priority: priority.value
+    };
+
+    ticketFilter.push(newTask)
+
+    if (newTask.status === "todo") {
+
+        if (!ticketFilter.includes(newTask.priority)) {
+
+            ticketFilter.push(newTask.priority)
+        }
+
+        let newOption = document.createElement("option")
+        newOption.value = newTask.title;
+         newOption.textContent = newTask.title;
+
+      todoSelection.append(newOption);
+        todoSelection.value = newTask.title;  
+        todoSelection.dispatchEvent(new Event("change")) // to trigger an event for the created titles
+
+
+        todoElementsWrapper.lastElementChild.querySelector("select").value = newTask.priority;
+
+    } else if (newTask.status === "in-progress") {
+
+        if (!ticketFilter.includes(newTask.priority)) {
+
+            ticketFilter.push(newTask.priority)
+        }
+
+            let newOption = document.createElement("option")
+            newOption.value = newTask.title
+            newOption.textContent = newTask.title
+
+        inProgressSelection.append(newOption)
+
+        inProgressSelection.value = newTask.title
+        inProgressSelection.dispatchEvent(new Event('change'))
+
+        inProgressElementsWrapper.lastElementChild.querySelector('select').value = newTask.priority
+
+    }  else if (newTask.status === "done") {
+
+        if (!ticketFilter.includes(newTask.priority)) {
+            ticketFilter.push(newTask.priority)
+        }
+
+            let newOption = document.createElement("option")
+               newOption.value = newTask.title
+            newOption.textContent = newTask.title
+
+          doneSelection.append(newOption)
+
+        doneSelection.value = newTask.title
+    doneSelection.dispatchEvent(new Event('change'))
+
+        doneElementWrapper.lastElementChild.querySelector("select").value = newTask.priority;
+  }
+
+            myModal.style.display = 'none'
+});
 
 
 
+HiddBtn.addEventListener('click', function() {
+
+     myModal.style.display = "none"
+})
 
 
 
