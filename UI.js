@@ -11,7 +11,7 @@ let ticketFilter = []
 export function displayCards(boardStatus, statSelect) {
   ticketFilter = []
   for( let card of cardsDb){
-    console.log(cardsDb);
+    // console.log(cardsDb);
     
     // title, status,priority,assignee
     let Ticket = {
@@ -55,8 +55,10 @@ function addToBoard(event,ticketWrapper,ticketStatus){
   }
 
   let boardSpn = document.createElement('span')
-  boardSpn.classList.add("bg-[#2A2A2D]","rounded-md")
+  boardSpn.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+
   let boardTitle = document.createElement('h3')
+  boardTitle.classList.add("ticketTitles")
   boardTitle.textContent = selectedTicket.cardTitle
 
   let prioritySelection = document.createElement('select')
@@ -126,8 +128,6 @@ function titleValidator(){
     return false
   }
 }
-titleInpt.addEventListener('input',titleValidator)
-
 
 function descriptionValidator(){
   let msg = document.querySelector('.msg')
@@ -147,6 +147,7 @@ function descriptionValidator(){
   }
 }
 
+titleInpt.addEventListener('input',titleValidator)
 descriptionInpt.addEventListener('input',descriptionValidator)
 
 
@@ -158,6 +159,8 @@ openModal.addEventListener('click', function(){
 HiddBtn.addEventListener('click', function(){
   ticketModal.style.display = "none"
 })
+
+
 
 creatCardForm.addEventListener('submit', function submitForm(event){
   event.preventDefault()
@@ -191,3 +194,27 @@ creatCardForm.addEventListener('submit', function submitForm(event){
 
 
 //some
+
+let searchInput =  document.getElementById('searchInput')
+searchInput.addEventListener('input' , searchByTitle)
+
+function searchByTitle(event) {
+  let inputText = event.target.value.toLowerCase().trim()
+
+  let boardCards = document.querySelectorAll('.ticketCards')
+
+  boardCards.forEach(card => {
+    let boardTitles = card.querySelector('.ticketTitles')
+    let titlesText = boardTitles.textContent.toLowerCase()
+
+    if (titlesText.includes(inputText)) {
+      card.style.display = "flex"
+    }else{
+      card.style.display = "none"
+    }
+  })
+
+  let filteredTickets = ticketFilter.filter(ticket => ticket.title.toLowerCase()
+  .includes(inputText.toLowerCase().trim()))
+  return filteredTickets
+}
