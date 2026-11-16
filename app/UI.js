@@ -172,13 +172,14 @@ creatCardForm.addEventListener('submit', function submitForm(event){
     status : statusSelection.value,
     priority : prioritySelection.value
   }
-  ticketFilter.push(newTicket)
-  if (!ticketFilter.includes(newTicket.priority)) {
-    ticketFilter.push(newTicket.priority)
-  }
+  cardsDb.push(newTicket)
+  // if (!cardsDb.includes(newTicket.priority)) {
+  //   cardsDb.push(newTicket.priority)
+  // }
 
   let newOption = document.createElement('option')
   newOption.classList.add("bg-[#2A2A2D]","rounded-md")
+  newOption.style.color = "white"
 
   newOption.value = newTicket.title
   newOption.textContent = newTicket.title

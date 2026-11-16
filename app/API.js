@@ -21,6 +21,7 @@ export function ResponseFunc(resolve,reject){
   })
 
   .then(data => {
+    // resolve("data hase been arrived")
     cardsDb = data
     displayCards('todo',todoSelection)
     displayCards('in-progress',inProgressSelection)
@@ -32,8 +33,15 @@ export function ResponseFunc(resolve,reject){
     
     resError.textContent = error.message
     resetWrapper.insertBefore(resError, resetWrapper.firstChild)
+    // reject('failed to load data from API')
     
   })
 }
 
+
 ResponseFunc()
+
+// export async function promiseFunction(resolve, reject,status = '', assignee = '', ) {
+//   let objectParams = {}
+
+// }

@@ -185,8 +185,14 @@
   .table {
     display: table;
   }
+  .h-2 {
+    height: calc(var(--spacing) * 2);
+  }
   .h-10 {
     height: calc(var(--spacing) * 10);
+  }
+  .w-2 {
+    width: calc(var(--spacing) * 2);
   }
   .w-40 {
     width: calc(var(--spacing) * 40);
@@ -273,14 +279,8 @@
   .bg-\[\#39393D\] {
     background-color: #39393D;
   }
-  .bg-\[\#111113\] {
-    background-color: #111113;
-  }
   .bg-\[\#202023\] {
     background-color: #202023;
-  }
-  .bg-\[\#\] {
-    background-color: #;
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
