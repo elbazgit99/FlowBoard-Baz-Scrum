@@ -73,24 +73,18 @@ function addToBoard(event,ticketWrapper,ticketStatus){
       
 }
 
-//NOTE : BRING THEM ALL  to API.JS
+
 //TODO
-
 let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-
 todoSelection.addEventListener('change', (event) => {
   addToBoard(event,todoElementsWrapper,'todo')
 })
-
-
 //inProgress
-
 let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
 inProgressSelection.addEventListener('change', (event) => {
   addToBoard(event,inProgressElementsWrapper, 'in-progress')
 } )
 //DONE
-
 let doneElementWrapper = document.getElementById('doneElementWrapper')
 doneSelection.addEventListener('change', (event) => {
   addToBoard(event,doneElementWrapper, 'done')
@@ -98,17 +92,20 @@ doneSelection.addEventListener('change', (event) => {
 
 
 
-let myModal = document.getElementById("myModal");
-let openModal = document.getElementById("openModal");
+let ticketModal = document.getElementById("ticketModal")
+let creatCardForm = document.getElementById('creatCardForm')
+
+let openModal = document.getElementById("openModal")
 
 let addBtn = document.getElementById("addBtn")
-  let HiddBtn = document.getElementById("HiddBtn")
+let HiddBtn = document.getElementById("HiddBtn")
 
-let titleInpt = document.getElementById("titleInpt");
-  let descriptionInpt = document.getElementById("descriptionInpt")
+let titleInpt = document.getElementById("titleInpt")
+let descriptionInpt = document.getElementById("descriptionInpt")
 
-let status = document.getElementById("status");
-let priority = document.getElementById("priority");
+let statusSelection = document.getElementById("statusSelection")
+
+let prioritySelection = document.getElementById("prioritySelection")
 
 
 
@@ -121,7 +118,7 @@ function titleValidator(){
     titleInpt.style.outline = ""
     setRequired(titleInpt,true)
     SetMaxLength(titleInpt,100)
-    if (titleValue.trim() == ``) { throw new Error(`ticket title is a must`) }
+    if (titleValue.trim() == ``) { throw new Error(`ticket title is a must`)}
     if (!SetLetters(titleValue)) { throw new Error(`Invalid title, Only Letters are valid`, titleInpt.style.outline = "solid 1px red") }
     return true
   } catch (error) {
@@ -154,90 +151,43 @@ descriptionInpt.addEventListener('input',descriptionValidator)
 
 
 
-
-openModal.addEventListener("click", function() {
-    myModal.style.display = "flex";
+openModal.addEventListener('click', function(){
+  ticketModal.style.display = "flex"
 })
 
-// addBtn.addEventListener("click", function() {
-//   descriptionValidator()
-//   titleValidator()
-
-//     if (titleInpt.value === "") {
-//         return
-//     }
-
-//     let newTicket = {
-//         title: titleInpt.value,
-//         description: descriptionInpt.value,
-//         status: status.value,
-//         priority: priority.value
-//     };
-
-//     ticketFilter.push(newTicket)
-
-//     if (newTicket.status === "todo") {
-
-//         if (!ticketFilter.includes(newTicket.priority)) {
-
-//             ticketFilter.push(newTicket.priority)
-//         }
-
-//         let newOption = document.createElement("option")
-//         newOption.value = newTicket.title;
-//          newOption.textContent = newTicket.title;
-
-//       todoSelection.append(newOption);
-//         todoSelection.value = newTicket.title;  
-//         todoSelection.dispatchEvent(new Event("change")) // to trigger an event for the created titles
-
-
-//         todoElementsWrapper.lastElementChild.querySelector("select").value = newTicket.priority;
-
-//     } else if (newTicket.status === "in-progress") {
-
-//         if (!ticketFilter.includes(newTicket.priority)) {
-
-//             ticketFilter.push(newTicket.priority)
-//         }
-
-//             let newOption = document.createElement("option")
-//             newOption.value = newTicket.title
-//             newOption.textContent = newTicket.title
-
-//         inProgressSelection.append(newOption)
-
-//         inProgressSelection.value = newTicket.title
-//         inProgressSelection.dispatchEvent(new Event('change'))
-
-//         inProgressElementsWrapper.lastElementChild.querySelector('select').value = newTicket.priority
-
-//     }  else if (newTicket.status === "done") {
-
-//         if (!ticketFilter.includes(newTicket.priority)) {
-//             ticketFilter.push(newTicket.priority)
-//         }
-
-//             let newOption = document.createElement("option")
-//                newOption.value = newTicket.title
-//             newOption.textContent = newTicket.title
-
-//           doneSelection.append(newOption)
-
-//         doneSelection.value = newTicket.title
-//     doneSelection.dispatchEvent(new Event('change'))
-
-//         doneElementWrapper.lastElementChild.querySelector("select").value = newTicket.priority;
-//   }
-
-//             myModal.style.display = 'none'
-            
-// })
-
-
-
-HiddBtn.addEventListener('click', function() {
-
-     myModal.style.display = "none"
+HiddBtn.addEventListener('click', function(){
+  ticketModal.style.display = "none"
 })
 
+creatCardForm.addEventListener('submit', function submitForm(event){
+  event.preventDefault()
+  titleValidator()
+  descriptionValidator()
+  let newTicket = {
+    title : titleInpt.value,
+    description : descriptionInpt.value,
+    status : statusSelection.value,
+    priority : prioritySelection.value
+  }
+  ticketFilter.push(newTicket)
+  if (!ticketFilter.includes(newTicket.priority)) {
+    ticketFilter.push(newTicket.priority)
+  }
+
+  let newOption = document.createElement('option')
+  newOption.classList.add("bg-[#2A2A2D]","rounded-md")
+
+  newOption.value = newTicket.title
+  newOption.textContent = newTicket.title
+  
+  // todoSelection   inProgressSelection  doneSelection
+  if (newTicket.status === 'todo') {
+    todoSelection.append(newOption)
+  }
+
+  ticketModal.style.display = "none"
+  creatCardForm.reset();
+})
+
+
+//some
