@@ -7,7 +7,7 @@
   <title>FLOWBOARD</title>
   <link rel="stylesheet" href="src/output.css">
   <link  rel="shortcut icon" href="/assets/bazScrumsvg.svg" type="image/x-icon">
-  <script type="module" src="/app/API.js" defer></script>
+  <script type="module" src="/app/main.js" defer></script>
 </head>
 
 <body class="bg-[#09090B] col text-white p-12">
@@ -36,7 +36,10 @@
         </label>
         <button id="openModal" type="button"
           class="h-10 bg-[#39393D]  p-2 rounded-md w-40 border border-white/75">Create Card 　 +</button>
-        <img src="./assets/filter.svg" class="h-10  p-2 rounded-md border border-white/75" alt="filter icon">
+        <img id="uiFilter" src="./assets/filter.svg" class="h-10  p-2 rounded-md border border-white/75" alt="filter icon">
+        <span id="filterSpn"  style="display: none; flex-direction: row;">
+
+        </span>
 
       </fieldset>
       <!-- modal -->
@@ -44,7 +47,7 @@
         <form id="creatCardForm" class="modalForm">
             <span>
               <h2 id="modalTitle" class="modal-title">Create Ticket</h2>
-              <small class="msg  text-red-800"></small>
+              <small class="msg  text-red-700"></small>
 
             </span>
 

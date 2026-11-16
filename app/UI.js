@@ -22,7 +22,6 @@ export function displayCards(boardStatus, statSelect) {
       
     }
     ticketFilter.push(Ticket)
-    console.log(ticketFilter)
   }
   ticketFilter.forEach(ticket => {
     if (ticket.cardStatus == boardStatus) {
@@ -39,13 +38,20 @@ export function displayCards(boardStatus, statSelect) {
     }
   })
 }
+
 export let todoSelection = document.getElementById('todoSelection')
 export let inProgressSelection = document.getElementById('inProgressSelection')
 export let doneSelection = document.getElementById('doneSelection')
 
+//TODO
+export let todoElementsWrapper = document.getElementById('todoElementsWrapper')
+//inProgress
+export let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
+//DONE
+export let doneElementWrapper = document.getElementById('doneElementWrapper')
 
 //EVENT function
-function addToBoard(event,ticketWrapper,ticketStatus){
+export function addToBoard(event,ticketWrapper,ticketStatus){
   let selectedTitle = event.target.value
   let selectedTicket = ticketFilter.find(ticket => 
     ticket.cardTitle === selectedTitle && ticket.cardStatus === ticketStatus
@@ -58,7 +64,7 @@ function addToBoard(event,ticketWrapper,ticketStatus){
   boardSpn.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
 
   let boardTitle = document.createElement('h3')
-  boardTitle.classList.add("ticketTitles")
+  boardTitle.classList.add("ticketTitle")
   boardTitle.textContent = selectedTicket.cardTitle
 
   let prioritySelection = document.createElement('select')
@@ -76,34 +82,16 @@ function addToBoard(event,ticketWrapper,ticketStatus){
 }
 
 
-//TODO
-let todoElementsWrapper = document.getElementById('todoElementsWrapper')
-todoSelection.addEventListener('change', (event) => {
-  addToBoard(event,todoElementsWrapper,'todo')
-})
-//inProgress
-let inProgressElementsWrapper = document.getElementById('inProgressElementsWrapper')
-inProgressSelection.addEventListener('change', (event) => {
-  addToBoard(event,inProgressElementsWrapper, 'in-progress')
-} )
-//DONE
-let doneElementWrapper = document.getElementById('doneElementWrapper')
-doneSelection.addEventListener('change', (event) => {
-  addToBoard(event,doneElementWrapper, 'done')
-} )
 
-
-
-let ticketModal = document.getElementById("ticketModal")
-let creatCardForm = document.getElementById('creatCardForm')
-
-let openModal = document.getElementById("openModal")
+export let ticketModal = document.getElementById("ticketModal")
+export let creatCardForm = document.getElementById('creatCardForm')
+export let openModal = document.getElementById("openModal")
 
 let addBtn = document.getElementById("addBtn")
-let HiddBtn = document.getElementById("HiddBtn")
+export let HiddBtn = document.getElementById("HiddBtn")
 
-let titleInpt = document.getElementById("titleInpt")
-let descriptionInpt = document.getElementById("descriptionInpt")
+export let titleInpt = document.getElementById("titleInpt")
+export let descriptionInpt = document.getElementById("descriptionInpt")
 
 let statusSelection = document.getElementById("statusSelection")
 
@@ -111,7 +99,7 @@ let prioritySelection = document.getElementById("prioritySelection")
 
 
 
-function titleValidator(){
+export function titleValidator(){
   let msg = document.querySelector('.msg')
   let titleValue = titleInpt.value
   localStorage.setItem("ticketTitle", titleValue)
@@ -129,7 +117,7 @@ function titleValidator(){
   }
 }
 
-function descriptionValidator(){
+export function descriptionValidator(){
   let msg = document.querySelector('.msg')
   let descriptionValue = descriptionInpt.value
   localStorage.setItem("ticketTitle", descriptionValue)
@@ -147,22 +135,9 @@ function descriptionValidator(){
   }
 }
 
-titleInpt.addEventListener('input',titleValidator)
-descriptionInpt.addEventListener('input',descriptionValidator)
 
 
-
-openModal.addEventListener('click', function(){
-  ticketModal.style.display = "flex"
-})
-
-HiddBtn.addEventListener('click', function(){
-  ticketModal.style.display = "none"
-})
-
-
-
-creatCardForm.addEventListener('submit', function submitForm(event){
+export function submitForm(event){
   event.preventDefault()
   titleValidator()
   descriptionValidator()
@@ -173,10 +148,6 @@ creatCardForm.addEventListener('submit', function submitForm(event){
     priority : prioritySelection.value
   }
   cardsDb.push(newTicket)
-  // if (!cardsDb.includes(newTicket.priority)) {
-  //   cardsDb.push(newTicket.priority)
-  // }
-
   let newOption = document.createElement('option')
   newOption.classList.add("bg-[#2A2A2D]","rounded-md")
   newOption.style.color = "white"
@@ -188,24 +159,26 @@ creatCardForm.addEventListener('submit', function submitForm(event){
   if (newTicket.status === 'todo') {
     todoSelection.append(newOption)
   }
+  else if(newTicket.status === 'in-progress'){
+    inProgressSelection.append(newOption)
+  }
+  else if(newTicket.status === 'done'){
+    doneSelection.append(newOption)
+  }
 
   ticketModal.style.display = "none"
   creatCardForm.reset();
-})
-
+}
 
 //some
-
-let searchInput =  document.getElementById('searchInput')
-searchInput.addEventListener('input' , searchByTitle)
-
-function searchByTitle(event) {
+export let searchInput =  document.getElementById('searchInput')
+export function searchByTitle(event) {
   let inputText = event.target.value.toLowerCase().trim()
 
   let boardCards = document.querySelectorAll('.ticketCards')
 
   boardCards.forEach(card => {
-    let boardTitles = card.querySelector('.ticketTitles')
+    let boardTitles = card.querySelector('.ticketTitle')
     let titlesText = boardTitles.textContent.toLowerCase()
 
     if (titlesText.includes(inputText)) {
@@ -215,7 +188,23 @@ function searchByTitle(event) {
     }
   })
 
-  let filteredTickets = ticketFilter.filter(ticket => ticket.title.toLowerCase()
-  .includes(inputText.toLowerCase().trim()))
+  let filteredTickets = ticketFilter.filter(ticket => ticket.title.toLowerCase().includes(inputText.toLowerCase().trim()))
   return filteredTickets
+}
+
+export let uiFilter = document.getElementById('uiFilter')
+export let filterSpn = document.getElementById('filterSpn')
+export function openUiFilter(){
+  cardsDb.forEach(card => {
+    let prioritySelect = document.createElement('select')
+    prioritySelect.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+
+    let priorityOptions = document.createElement('option')
+    priorityOptions.style.color = 'white'
+    priorityOptions.textContent = card.priority
+    priorityOptions.value = card.priority
+
+    prioritySelect.append(priorityOptions)
+    filterSpn.append(prioritySelect)
+  })
 }
