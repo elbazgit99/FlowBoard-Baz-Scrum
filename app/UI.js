@@ -95,11 +95,12 @@ export function addToBoard(event,ticketWrapper,ticketStatus){
         let updateBtn = document.createElement('button')
         updateBtn.type = 'submit'
         updateBtn.textContent = "Update"
+        updateBtn.classList.add('updateBtn')
+        
         modalBtnsSpn.insertBefore(updateBtn, modalBtnsSpn.firstChild)
       })
       prioritySelection.append(priorityOptions)
       
-
   boardSpn.append(boardTitle,prioritySelection,editebtn)
   ticketWrapper.append(boardSpn)
       
@@ -145,11 +146,10 @@ export function descriptionValidator(){
   }
 }
 
-
+//new form data
 
 export function submitForm(event){
-  
-  updateBtn.style.display = 'none'
+
   event.preventDefault()
   titleValidator()
   descriptionValidator()
@@ -179,7 +179,8 @@ export function submitForm(event){
   }
 
   ticketModal.style.display = "none"
-
+  let toHiddUpdateBtn = document.getElementById('updateBtn')
+  toHiddUpdateBtn.classList.add('hidden')
   creatCardForm.reset();
 }
 
