@@ -119,7 +119,10 @@
     background-color: #39393D;
 }
 
-
+.ticketCards{
+    display: flex;
+    justify-content: space-between;
+}
 
 @media (max-width: 400px) {
     .details-row {

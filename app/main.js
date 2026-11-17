@@ -1,9 +1,8 @@
-// import all your function here to display incliding ui, server,
 import * as api from './API.js'
 import * as ui from './UI.js'
 // getCards, addToBoard, titleValidator, descriptionValidator
-
 api.getCards()
+
 
 //TODO
 ui.todoSelection.addEventListener('change', (event) => {
@@ -32,7 +31,8 @@ ui.openModal.addEventListener('click', function(){
   ui.ticketModal.style.display = "flex"
 })
 ui.HiddBtn.addEventListener('click', function(){
-  ticketModal.style.display = "none"
+  ui.ticketModal.style.display = "none"
 })
 
-ui.uiFilter.addEventListener('click', ui.openUiFilter)
+// ui.uiFilter.addEventListener('click', ui.openUiFilter)
+ui.openUiFilter()

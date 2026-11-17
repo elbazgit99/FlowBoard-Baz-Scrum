@@ -11,7 +11,7 @@ let ticketFilter = []
 export function displayCards(boardStatus, statSelect) {
   ticketFilter = []
   for( let card of cardsDb){
-    // console.log(cardsDb);
+    // console.log(cardsDb)
     
     // title, status,priority,assignee
     let Ticket = {
@@ -55,9 +55,9 @@ export function addToBoard(event,ticketWrapper,ticketStatus){
   let selectedTicket = ticketFilter.find(ticket => 
     ticket.title === selectedTitle && ticket.status === ticketStatus
   )
-  if (!selectedTicket) {
-    return
-  }
+  // if (!selectedTicket) {
+  //   return
+  // }
 
   let boardSpn = document.createElement('span')
   boardSpn.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
@@ -197,29 +197,26 @@ export let uiFilter = document.getElementById('uiFilter')
 export let filterSpn = document.getElementById('filterSpn')
 
 export function openUiFilter(){
-  if ( filterSpn.style.display === 'flex') {
-      filterSpn.style.display = 'none'
-      return
-  }
+  let prioritySelect = document.getElementById('PriorityFilter')
+  prioritySelect.classList.add("bg-[#2A2A2D]","rounded-md")
 
-  filterSpn.style.display = 'flex'
-  filterSpn.style.cursor = 'pointer'
-  let prioritySelect = document.createElement('select')
-  prioritySelect.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+  let membersSelect = document.getElementById('membersFilter')
+  membersSelect.classList.add("bg-[#2A2A2D]","rounded-md")
 
   cardsDb.forEach(card => {
-    if (!ticketFilter.includes(card.priority)) {
-      ticketFilter.push(card.priority)
+      ticketFilter.push(card.priority, card.assignee)
       let priorityOptions = document.createElement('option')
       priorityOptions.style.color = 'white'
       priorityOptions.textContent = card.priority
       priorityOptions.value = card.priority
-  
       prioritySelect.append(priorityOptions)
-    }
 
+      let membersOptions = document.createElement('option')
+      membersOptions.style.color = 'white'
+      membersOptions.textContent = card.assignee
+      membersOptions.value = card.assignee
+      membersSelect.append(membersOptions)
   })
-  filterSpn.textContent = ''
-  filterSpn.append(prioritySelect)
-
+  // filterSpn.append(prioritySelect,membersSelect)
 }
+// openUiFilter()

@@ -1,4 +1,5 @@
-  // import axios from 'axios';
+import axios from 'axios'
+  // console.log(axios.isCancel("any thing"))
 import {displayCards} from './UI.js'
 import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
 
@@ -14,11 +15,8 @@ import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
   export async function getCards(){
     
     try {
-      const res = await fetch(url)
-      if (!res.ok) {
-        throw new Error(`Enable to fetch ${res.status}`)
-      }
-      const tickets = await res.json()
+      const res = await axios.get(url)
+      const tickets = await res.data
       cardsDb = tickets
       // console.log(cardsDb)
       displayCards('todo',todoSelection)
@@ -33,15 +31,25 @@ import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
   }
 
 
-  // let URL = ''
-  // async function getData(){
-  //   axios.get(url,{
-  //     headers : {
-  //       'Authorization' : 'hamza'
-  //     },
-  //     params : {
-  //       id : 2
-  //     }
-  //   })
-  // }
 
+  // export async function getCards(){
+
+    
+  //   try {
+  //     const res = await fetch(url)
+  //     if (!res.ok) {
+  //       throw new Error(`Enable to fetch ${res.status}`)
+  //     }
+  //     const tickets = await res.json()
+  //     cardsDb = tickets
+  //     // console.log(cardsDb)
+  //     displayCards('todo',todoSelection)
+  //     displayCards('in-progress',inProgressSelection)
+  //     displayCards('done',doneSelection)
+  //     return cardsDb
+      
+  //   } catch (error) {
+  //     resError.textContent = error.message
+  //     resetWrapper.insertBefore(resError, resetWrapper.firstChild)
+  //   }
+  // }
