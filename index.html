@@ -13,14 +13,19 @@
 
 <body class="bg-[#09090B] col text-white p-12">
   <!-- npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch -->
-  <h1 class=" text-1 pb-1 mb-4"><img src="./assets/bazScrumsvg.svg"
-      style="height: 2rem;display: inline-block; border-radius: 5px;">
-    <span style="color: #8E1B38; font-weight: bolder;">Baz</span> Scrum
-  </h1>
-  <span id="resetWrapper">
-    <!-- <p></p> in js -->
-    <!-- <button></button> -->
-  </span>
+   <section style="display: flex; justify-content: space-between;margin-bottom: 2rem;">
+     <h1 class=" text-1 pb-1 mb-4"><img src="./assets/bazScrumsvg.svg"
+         style="height: 2rem;display: inline-block; border-radius: 5px;">
+    <span style="color: #8E1B38; font-weight: bolder;">Baz</span> Scrum</h1>
+
+      <span id="resetWrapper" class="flex flex-row content-between items-center gap-3 ">
+        <p id="resError" ></p>
+        <button id="refreshBtn" class="hidden h-10 bg-[#39393D]  p-2 rounded-md w-40 border border-white/75">Refresh ⟳</button>
+
+      </span>
+    
+   </section>
+<button  ></button>
   <main class="grid grid-cols-5 gap-4 ">
     <aside class="p-3 bg-[#18181B] border border-[#27272A] rounded-xl grid  gap-2">
       <span class=" p-2 bg-[#202023] rounded-sm">Backlog</span>
@@ -103,10 +108,10 @@
             </div>
           </fieldset>
 
-          <div id="modalButtons" class="modal-btns">
+          <span id="modalBtnsSpn" class="modal-btns">
             <button id="addBtn" type="submit" class="modal-btn">Add</button>
             <button id="HiddBtn" type="button" class="modal-btn">hidd</button>
-          </div>
+          </span>
 
         </form>
       </section>

@@ -3,7 +3,10 @@ import * as ui from './UI.js'
 // getCards, addToBoard, titleValidator, descriptionValidator
 api.getCards()
 
-
+api.refreshBtn.addEventListener("click", function() {
+    location.reload()
+    api.getCards()
+})
 //TODO
 ui.todoSelection.addEventListener('change', (event) => {
   ui.addToBoard(event,ui.todoElementsWrapper,'todo')
@@ -17,6 +20,7 @@ ui.doneSelection.addEventListener('change', (event) => {
   ui.addToBoard(event,ui.doneElementWrapper, 'done')
 } )
 
+
 // INPUT VALIDATORS
 ui.titleInpt.addEventListener('input',ui.titleValidator)
 ui.descriptionInpt.addEventListener('input',ui.descriptionValidator)
@@ -25,7 +29,9 @@ ui.descriptionInpt.addEventListener('input',ui.descriptionValidator)
 ui.searchInput.addEventListener('input' , ui.searchByTitle)
 
 //form submition
-ui.creatCardForm.addEventListener('submit',ui.submitForm )
+ui.creatCardForm.addEventListener('submit',(event) => {
+  ui.submitForm(event)
+} )
 
 ui.openModal.addEventListener('click', function(){
   ui.ticketModal.style.display = "flex"

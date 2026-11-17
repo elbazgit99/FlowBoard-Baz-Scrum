@@ -12,7 +12,6 @@ export function displayCards(boardStatus, statSelect) {
   ticketFilter = []
   for( let card of cardsDb){
     // console.log(cardsDb)
-    
     // title, status,priority,assignee
     let Ticket = {
       title : card.title,
@@ -49,38 +48,6 @@ export let inProgressElementsWrapper = document.getElementById('inProgressElemen
 //DONE
 export let doneElementWrapper = document.getElementById('doneElementWrapper')
 
-//EVENT function
-export function addToBoard(event,ticketWrapper,ticketStatus){
-  let selectedTitle = event.target.value
-  let selectedTicket = ticketFilter.find(ticket => 
-    ticket.title === selectedTitle && ticket.status === ticketStatus
-  )
-  // if (!selectedTicket) {
-  //   return
-  // }
-
-  let boardSpn = document.createElement('span')
-  boardSpn.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
-
-  let boardTitle = document.createElement('h3')
-  boardTitle.classList.add("ticketTitle")
-  boardTitle.textContent = selectedTicket.title
-
-  let prioritySelection = document.createElement('select')
-      let priorityOptions = document.createElement('option')
-      priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
-
-      priorityOptions.textContent = selectedTicket.priority
-      priorityOptions.value = selectedTicket.priority
-
-      prioritySelection.append(priorityOptions)
-
-  boardSpn.append(boardTitle,prioritySelection)
-  ticketWrapper.append(boardSpn)
-      
-}
-
-
 
 export let ticketModal = document.getElementById("ticketModal")
 export let creatCardForm = document.getElementById('creatCardForm')
@@ -95,6 +62,50 @@ export let descriptionInpt = document.getElementById("descriptionInpt")
 let statusSelection = document.getElementById("statusSelection")
 
 let prioritySelection = document.getElementById("prioritySelection")
+
+let modalBtnsSpn = document.getElementById('modalBtnsSpn')
+
+
+//EVENT function
+export function addToBoard(event,ticketWrapper,ticketStatus){
+  let selectedTitle = event.target.value
+  let selectedTicket = ticketFilter.find(ticket => 
+    ticket.title === selectedTitle && ticket.status === ticketStatus
+  )
+  let boardSpn = document.createElement('span')
+  boardSpn.classList.add("bg-[#2A2A2D]","rounded-md","ticketCards")
+
+  let boardTitle = document.createElement('h3')
+  boardTitle.classList.add("ticketTitle")
+  boardTitle.value = selectedTicket.title
+  boardTitle.textContent = selectedTicket.title
+
+  let prioritySelection = document.createElement('select')
+      let priorityOptions = document.createElement('option')
+      priorityOptions.classList.add("bg-[#2A2A2D]","rounded-md")
+
+      priorityOptions.textContent = selectedTicket.priority
+      priorityOptions.value = selectedTicket.priority
+
+      let editebtn = document.createElement('img')
+      editebtn.src = "./assets/edite.svg"
+      editebtn.addEventListener('click', function(){
+        ticketModal.style.display = "flex";
+        addBtn.style.display = "none"
+        let updateBtn = document.createElement('button')
+        updateBtn.type = 'submit'
+        updateBtn.textContent = "Update"
+        modalBtnsSpn.insertBefore(updateBtn, modalBtnsSpn.firstChild)
+      })
+      prioritySelection.append(priorityOptions)
+      
+
+  boardSpn.append(boardTitle,prioritySelection,editebtn)
+  ticketWrapper.append(boardSpn)
+      
+}
+
+
 
 
 
@@ -137,6 +148,8 @@ export function descriptionValidator(){
 
 
 export function submitForm(event){
+  
+  updateBtn.style.display = 'none'
   event.preventDefault()
   titleValidator()
   descriptionValidator()
@@ -166,6 +179,7 @@ export function submitForm(event){
   }
 
   ticketModal.style.display = "none"
+
   creatCardForm.reset();
 }
 

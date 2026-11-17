@@ -1,55 +1,52 @@
 import axios from 'axios'
-  // console.log(axios.isCancel("any thing"))
-import {displayCards} from './UI.js'
-import {todoSelection, inProgressSelection, doneSelection} from './UI.js'
+import axiosRetry from "https://cdn.jsdelivr.net/npm/axios-retry@4.5.0/+esm";
 
-  export let cardsDb = [];
- 
+import { displayCards } from './UI.js'
+import { todoSelection, inProgressSelection, doneSelection } from './UI.js'
 
-  let resetWrapper = document.getElementById('resetWrapper')
-  let resError = document.createElement('p')
-  let retryBtn = document.createElement('button')
-
-  let url = "https://flowboard-api-virid.vercel.app/cards"
-
-  export async function getCards(){
-    
-    try {
-      const res = await axios.get(url)
-      const tickets = await res.data
-      cardsDb = tickets
-      // console.log(cardsDb)
-      displayCards('todo',todoSelection)
-      displayCards('in-progress',inProgressSelection)
-      displayCards('done',doneSelection)
-      return cardsDb
-      
-    } catch (error) {
-      resError.textContent = error.message
-      resetWrapper.insertBefore(resError, resetWrapper.firstChild)
-    }
+axiosRetry(axios, {
+  retries: 3, 
+  retryDelay: axiosRetry.exponentialDelay, 
+  retryCondition: (error) => {
+    return axiosRetry.isNetworkOrIdempotentRequestError(error);
   }
+});
 
 
 
-  // export async function getCards(){
+export let cardsDb = [];
+let resetWrapper = document.getElementById('resetWrapper')
+export let refreshBtn = document.getElementById('refreshBtn')
+let resError = document.getElementById('resError')
 
-    
-  //   try {
-  //     const res = await fetch(url)
-  //     if (!res.ok) {
-  //       throw new Error(`Enable to fetch ${res.status}`)
-  //     }
-  //     const tickets = await res.json()
-  //     cardsDb = tickets
-  //     // console.log(cardsDb)
-  //     displayCards('todo',todoSelection)
-  //     displayCards('in-progress',inProgressSelection)
-  //     displayCards('done',doneSelection)
-  //     return cardsDb
-      
-  //   } catch (error) {
-  //     resError.textContent = error.message
-  //     resetWrapper.insertBefore(resError, resetWrapper.firstChild)
-  //   }
-  // }
+
+// "https://flowboard-api-virid.vercel.app/cards"
+let url = "https://flowboard-api-virid.vercel.app/cards"
+export async function getCards() {
+
+
+  try {
+    const res = await axios.get(url)
+    const tickets = await res.data
+    cardsDb = tickets
+    // console.log(cardsDb)
+    displayCards('todo', todoSelection)
+    displayCards('in-progress', inProgressSelection)
+    displayCards('done', doneSelection)
+    return cardsDb
+
+  } catch (error) {
+
+      resError.style.color = "#8E1B38"
+      resError.textContent = error.message
+      refreshBtn.style.display = "block"
+      resetWrapper.insertBefore(resError, resetWrapper.firstChild)
+  }
+}
+
+// fetch('https://flowboard-api-virid.vercel.app/reset', {
+//   method: 'POST',
+//   headers: {
+//     'X-Workspace': 'public'
+//   }
+// })
